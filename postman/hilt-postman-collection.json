@@ -1,0 +1,335 @@
+{
+  "info": {
+    "_postman_id": "67f42a19-4bd9-44c4-8a2a-7d55f23d21fb",
+    "name": "Hilt Merchant Contract",
+    "description": "Official Postman collection for Hilt's supported merchant contract: products, checkout, payments, memberships, receipts, support, and webhooks.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Create product",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_type\": \"PAYMENT_LINK\",\n  \"title\": \"Discord membership\",\n  \"description\": \"Monthly paid access\",\n  \"amount_minor_units\": 29000000,\n  \"token_mint\": \"EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v\",\n  \"merchant_wallet\": \"{{merchantWallet}}\",\n  \"delivery_type\": \"DISCORD_INVITE\",\n  \"delivery_value\": \"https://discord.gg/example\",\n  \"membership_config\": {\n    \"enabled\": true,\n    \"platform\": \"DISCORD\",\n    \"identity_type\": \"DISCORD_USER_ID\",\n    \"renewal_mode\": \"MANUAL\",\n    \"billing_interval_days\": 30,\n    \"grace_period_days\": 3\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "products"]
+            }
+          }
+        },
+        {
+          "name": "List products",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "products"]
+            }
+          }
+        },
+        {
+          "name": "Create signed handoff link",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identity_type\": \"TELEGRAM_USER_ID\",\n  \"identity_value\": \"728255790\",\n  \"identity_display\": \"@buyer\",\n  \"expires_in_minutes\": 30\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/products/{{productId}}/handoff-link",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "products", "{{productId}}", "handoff-link"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hosted checkout",
+      "item": [
+        {
+          "name": "Read public checkout payload",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/products/p/{{slug}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "products", "p", "{{slug}}"]
+            }
+          }
+        },
+        {
+          "name": "Connect checkout session",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payer_wallet\": \"{{payerWallet}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/products/p/{{slug}}/connect",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "products", "p", "{{slug}}", "connect"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Read payment status",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/payments/{{paymentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "payments", "{{paymentId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Memberships",
+      "item": [
+        {
+          "name": "List memberships",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/memberships?limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "memberships"],
+              "query": [{ "key": "limit", "value": "20" }]
+            }
+          }
+        },
+        {
+          "name": "Renewal intelligence",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/memberships/renewal-intelligence?window_days=14&limit=25",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "memberships", "renewal-intelligence"],
+              "query": [
+                { "key": "window_days", "value": "14" },
+                { "key": "limit", "value": "25" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Retry delivery",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/memberships/{{membershipId}}/retry-delivery",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "memberships", "{{membershipId}}", "retry-delivery"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Receipts",
+      "item": [
+        {
+          "name": "List receipts",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/receipts?page=1&per_page=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "receipts"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "per_page", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Read public receipt proof",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/receipt/{{receiptId}}/public",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "receipt", "{{receiptId}}", "public"]
+            }
+          }
+        },
+        {
+          "name": "Send proof link",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"buyer@example.com\",\n  \"note\": \"Your receipt and proof link\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/receipt/{{receiptId}}/send-proof",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "receipt", "{{receiptId}}", "send-proof"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Support",
+      "item": [
+        {
+          "name": "Create support ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"Buyer needs help\",\n  \"category\": \"OTHER\",\n  \"body\": \"Payment confirmed, but the buyer still needs a manual handoff.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/support/tickets",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "support", "tickets"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "List webhook endpoints",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{bearerToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/webhooks/endpoints",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "webhooks", "endpoints"]
+            }
+          }
+        },
+        {
+          "name": "Create webhook endpoint",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{bearerToken}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"Primary webhook\",\n  \"url\": \"https://example.com/hilt/webhook\",\n  \"subscribed_events\": [\"payment.confirmed\", \"payment.failed\", \"receipt.created\"],\n  \"product_ids\": []\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/webhooks/endpoints",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "webhooks", "endpoints"]
+            }
+          }
+        },
+        {
+          "name": "Send test event",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{bearerToken}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_type\": \"payment.confirmed\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/webhooks/endpoints/{{endpointId}}/test",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "webhooks", "endpoints", "{{endpointId}}", "test"]
+            }
+          }
+        },
+        {
+          "name": "List deliveries",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{bearerToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/webhooks/deliveries?page=1&per_page=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "webhooks", "deliveries"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "per_page", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Replay delivery",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{bearerToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/webhooks/deliveries/{{deliveryId}}/replay",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "webhooks", "deliveries", "{{deliveryId}}", "replay"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

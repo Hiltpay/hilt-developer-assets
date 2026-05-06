@@ -1,0 +1,17 @@
+name: Validate developer assets
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node -e "const fs=require('node:fs'); const files=['openapi/hilt-openapi-v1.json','postman/hilt-postman-collection.json','postman/hilt-postman-environment.json','examples/webhooks/payment.confirmed.json','examples/webhooks/delivery.failed.json']; for (const file of files) { JSON.parse(fs.readFileSync(file,'utf8')); console.log('validated ' + file); }"

@@ -1,0 +1,31 @@
+{
+  "id": "2fe78f87-1157-4b57-a316-ae9a7731cfa0",
+  "type": "delivery.failed",
+  "api_version": "2026-05-04",
+  "created_at": "2026-05-04T13:44:02Z",
+  "livemode": true,
+  "data": {
+    "payment": {
+      "id": "f0f4e620-1ca3-4fc8-b0ba-2d04342fe467",
+      "status": "CONFIRMED",
+      "delivery_status": "FAILED",
+      "product": {
+        "id": "ae9673c8-95db-4b39-bc2c-b5e6d5dfd9d3",
+        "slug": "telegram-pro",
+        "title": "Telegram Pro Membership"
+      }
+    },
+    "membership": {
+      "id": "0ce94832-4da4-4f47-a7df-9505817d7022",
+      "status": "ACTIVE",
+      "platform": "TELEGRAM",
+      "delivery_status": "FAILED"
+    },
+    "delivery": {
+      "channel": "TELEGRAM",
+      "status": "FAILED",
+      "failure_code": "invite_expired",
+      "failure_message": "Telegram invite expired before the buyer joined."
+    }
+  }
+}
