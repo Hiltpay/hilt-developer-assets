@@ -8,6 +8,8 @@
     { "key": "productId", "value": "PRODUCT_ID", "type": "text", "enabled": true },
     { "key": "slug", "value": "example-slug", "type": "text", "enabled": true },
     { "key": "paymentId", "value": "PAYMENT_ID", "type": "text", "enabled": true },
+    { "key": "payApiAppId", "value": "PAY_API_APP_ID", "type": "text", "enabled": true },
+    { "key": "payApiProductId", "value": "PAY_API_PRODUCT_ID", "type": "text", "enabled": true },
     { "key": "membershipId", "value": "MEMBERSHIP_ID", "type": "text", "enabled": true },
     { "key": "receiptId", "value": "RECEIPT_ID", "type": "text", "enabled": true },
     { "key": "ticketId", "value": "TICKET_ID", "type": "text", "enabled": true },

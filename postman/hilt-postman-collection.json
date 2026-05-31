@@ -114,6 +114,104 @@
       ]
     },
     {
+      "name": "Hilt Pay API",
+      "item": [
+        {
+          "name": "List Pay API rails",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/access/rails",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "access", "rails"]
+            }
+          }
+        },
+        {
+          "name": "Create Pay API app",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Idempotency-Key", "value": "postman-pay-api-app-001", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pro AI API\",\n  \"external_app_id\": \"pro-ai-api\",\n  \"default_rail\": \"solana_usdc\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/access/apps",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "access", "apps"]
+            }
+          }
+        },
+        {
+          "name": "Create Pay API product",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Idempotency-Key", "value": "postman-pay-api-product-001", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"access_app_id\": \"{{payApiAppId}}\",\n  \"external_product_id\": \"pro-ai-api\",\n  \"title\": \"Pro AI API - Monthly\",\n  \"amount_minor_units\": 25000000,\n  \"merchant_wallet\": \"{{merchantWallet}}\",\n  \"entitlement_duration_days\": 30,\n  \"default_rail\": \"solana_usdc\",\n  \"status\": \"paused\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/access/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "access", "products"]
+            }
+          }
+        },
+        {
+          "name": "Create Pay API payment session",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Idempotency-Key", "value": "postman-pay-api-session-001", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_product_id\": \"pro-ai-api\",\n  \"external_customer_id\": \"cust_123\",\n  \"email\": \"buyer@example.com\",\n  \"rail\": \"solana_usdc\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/access/payment-sessions",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "access", "payment-sessions"]
+            }
+          }
+        },
+        {
+          "name": "Check Pay API entitlement",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_product_id\": \"pro-ai-api\",\n  \"rail\": \"solana_usdc\",\n  \"external_customer_id\": \"cust_123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/access/entitlements/check",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "access", "entitlements", "check"]
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "Memberships",
       "item": [
         {
