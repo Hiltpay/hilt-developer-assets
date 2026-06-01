@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "67f42a19-4bd9-44c4-8a2a-7d55f23d21fb",
     "name": "Hilt Merchant Contract",
-    "description": "Official Postman collection for Hilt's supported merchant contract: products, checkout, payments, memberships, receipts, support, and webhooks.",
+    "description": "Official Postman collection for Hilt Pay Workspace and Hilt Pay API: products, checkout, payments, memberships, receipts, support, webhooks, and agent-first Hilt Pay API setup.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -14,8 +14,16 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" },
-              { "key": "Content-Type", "value": "application/json", "type": "text" }
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -23,8 +31,13 @@
             },
             "url": {
               "raw": "{{baseUrl}}/v1/products",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "products"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "products"
+              ]
             }
           }
         },
@@ -33,12 +46,21 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" }
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/products",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "products"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "products"
+              ]
             }
           }
         },
@@ -47,8 +69,16 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" },
-              { "key": "Content-Type", "value": "application/json", "type": "text" }
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -56,8 +86,15 @@
             },
             "url": {
               "raw": "{{baseUrl}}/v1/products/{{productId}}/handoff-link",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "products", "{{productId}}", "handoff-link"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "products",
+                "{{productId}}",
+                "handoff-link"
+              ]
             }
           }
         }
@@ -72,8 +109,15 @@
             "method": "GET",
             "url": {
               "raw": "{{baseUrl}}/v1/products/p/{{slug}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "products", "p", "{{slug}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "products",
+                "p",
+                "{{slug}}"
+              ]
             }
           }
         },
@@ -82,7 +126,11 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json", "type": "text" }
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -90,8 +138,16 @@
             },
             "url": {
               "raw": "{{baseUrl}}/v1/products/p/{{slug}}/connect",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "products", "p", "{{slug}}", "connect"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "products",
+                "p",
+                "{{slug}}",
+                "connect"
+              ]
             }
           }
         }
@@ -106,8 +162,14 @@
             "method": "GET",
             "url": {
               "raw": "{{baseUrl}}/v1/payments/{{paymentId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "payments", "{{paymentId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "payments",
+                "{{paymentId}}"
+              ]
             }
           }
         }
@@ -117,16 +179,155 @@
       "name": "Hilt Pay API",
       "item": [
         {
+          "name": "Agent bootstrap",
+          "description": "Agent-first Hilt Pay API setup: create a sandbox setup intent, submit a manifest, receive a pricing recommendation, and wait for owner approval before live key issuance.",
+          "item": [
+            {
+              "name": "Create agent setup intent",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"agent_name\": \"Acme API Builder\",\n  \"agent_platform\": \"cursor\",\n  \"requested_use_case\": \"Protect /ai/pro with Hilt Pay API\",\n  \"contact_email\": \"founder@acme.test\",\n  \"requested_permissions\": [\n    \"access:read\",\n    \"access:write\",\n    \"access:webhooks\"\n  ],\n  \"ttl_hours\": 24\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/access/agent-bootstrap",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "access",
+                    "agent-bootstrap"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Submit agent setup manifest",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"setup_token\": \"{{setupToken}}\",\n  \"manifest\": {\n    \"app\": {\n      \"name\": \"Acme AI\",\n      \"external_app_id\": \"acme-ai\"\n    },\n    \"product\": {\n      \"external_product_id\": \"pro-api\",\n      \"title\": \"Pro API access\",\n      \"amount_minor_units\": 79000000,\n      \"default_rail\": \"solana_usdc\",\n      \"expected_monthly_payments\": 120,\n      \"expected_monthly_volume_usd\": 9480,\n      \"expected_monthly_webhook_events\": 500,\n      \"expected_monthly_entitlement_checks\": 12000\n    },\n    \"payment_protocol\": \"x402\",\n    \"settlement_rail\": \"solana_usdc\",\n    \"protected_resource\": {\n      \"url\": \"https://api.acme.test/ai/pro\",\n      \"method\": \"POST\",\n      \"customer_identity\": \"external_customer_id\"\n    },\n    \"webhook\": {\n      \"url\": \"https://api.acme.test/webhooks/hilt\",\n      \"subscribed_events\": [\n        \"access.entitlement.activated\",\n        \"payment.confirmed\"\n      ]\n    }\n  }\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/access/agent-bootstrap/{{setupIntentId}}/manifest",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "access",
+                    "agent-bootstrap",
+                    "{{setupIntentId}}",
+                    "manifest"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get agent setup status",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"setup_token\": \"{{setupToken}}\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/access/agent-bootstrap/{{setupIntentId}}/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "access",
+                    "agent-bootstrap",
+                    "{{setupIntentId}}",
+                    "status"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Owner approves agent setup",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{bearerToken}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"setup_token\": \"{{setupToken}}\",\n  \"approved_permissions\": [\n    \"access:read\",\n    \"access:write\",\n    \"access:webhooks\"\n  ],\n  \"issue_live_key\": true,\n  \"live_key_name\": \"Acme AI Hilt Pay API key\",\n  \"confirm_owner_approval\": true\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/access/agent-bootstrap/{{setupIntentId}}/approve",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "access",
+                    "agent-bootstrap",
+                    "{{setupIntentId}}",
+                    "approve"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
           "name": "List Pay API rails",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" }
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/access/rails",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "access", "rails"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "access",
+                "rails"
+              ]
             }
           }
         },
@@ -135,9 +336,21 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" },
-              { "key": "Idempotency-Key", "value": "postman-pay-api-app-001", "type": "text" },
-              { "key": "Content-Type", "value": "application/json", "type": "text" }
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "postman-pay-api-app-001",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -145,8 +358,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/v1/access/apps",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "access", "apps"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "access",
+                "apps"
+              ]
             }
           }
         },
@@ -155,9 +374,21 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" },
-              { "key": "Idempotency-Key", "value": "postman-pay-api-product-001", "type": "text" },
-              { "key": "Content-Type", "value": "application/json", "type": "text" }
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "postman-pay-api-product-001",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -165,8 +396,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/v1/access/products",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "access", "products"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "access",
+                "products"
+              ]
             }
           }
         },
@@ -175,9 +412,21 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" },
-              { "key": "Idempotency-Key", "value": "postman-pay-api-session-001", "type": "text" },
-              { "key": "Content-Type", "value": "application/json", "type": "text" }
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "postman-pay-api-session-001",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -185,8 +434,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/v1/access/payment-sessions",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "access", "payment-sessions"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "access",
+                "payment-sessions"
+              ]
             }
           }
         },
@@ -195,8 +450,16 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" },
-              { "key": "Content-Type", "value": "application/json", "type": "text" }
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -204,8 +467,15 @@
             },
             "url": {
               "raw": "{{baseUrl}}/v1/access/entitlements/check",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "access", "entitlements", "check"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "access",
+                "entitlements",
+                "check"
+              ]
             }
           }
         }
@@ -219,13 +489,27 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" }
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/memberships?limit=20",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "memberships"],
-              "query": [{ "key": "limit", "value": "20" }]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "memberships"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
             }
           }
         },
@@ -234,15 +518,31 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" }
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/memberships/renewal-intelligence?window_days=14&limit=25",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "memberships", "renewal-intelligence"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "memberships",
+                "renewal-intelligence"
+              ],
               "query": [
-                { "key": "window_days", "value": "14" },
-                { "key": "limit", "value": "25" }
+                {
+                  "key": "window_days",
+                  "value": "14"
+                },
+                {
+                  "key": "limit",
+                  "value": "25"
+                }
               ]
             }
           }
@@ -252,12 +552,23 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" }
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/memberships/{{membershipId}}/retry-delivery",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "memberships", "{{membershipId}}", "retry-delivery"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "memberships",
+                "{{membershipId}}",
+                "retry-delivery"
+              ]
             }
           }
         }
@@ -271,15 +582,30 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" }
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/receipts?page=1&per_page=20",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "receipts"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "receipts"
+              ],
               "query": [
-                { "key": "page", "value": "1" },
-                { "key": "per_page", "value": "20" }
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20"
+                }
               ]
             }
           }
@@ -290,8 +616,15 @@
             "method": "GET",
             "url": {
               "raw": "{{baseUrl}}/v1/receipt/{{receiptId}}/public",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "receipt", "{{receiptId}}", "public"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "receipt",
+                "{{receiptId}}",
+                "public"
+              ]
             }
           }
         },
@@ -300,8 +633,16 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" },
-              { "key": "Content-Type", "value": "application/json", "type": "text" }
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -309,8 +650,15 @@
             },
             "url": {
               "raw": "{{baseUrl}}/v1/receipt/{{receiptId}}/send-proof",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "receipt", "{{receiptId}}", "send-proof"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "receipt",
+                "{{receiptId}}",
+                "send-proof"
+              ]
             }
           }
         }
@@ -324,8 +672,16 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "X-Hilt-Key", "value": "{{apiKey}}", "type": "text" },
-              { "key": "Content-Type", "value": "application/json", "type": "text" }
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -333,8 +689,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/v1/support/tickets",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "support", "tickets"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "support",
+                "tickets"
+              ]
             }
           }
         }
@@ -348,12 +710,22 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{bearerToken}}", "type": "text" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{bearerToken}}",
+                "type": "text"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/webhooks/endpoints",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "webhooks", "endpoints"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "endpoints"
+              ]
             }
           }
         },
@@ -362,8 +734,16 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{bearerToken}}", "type": "text" },
-              { "key": "Content-Type", "value": "application/json", "type": "text" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{bearerToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -371,8 +751,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/v1/webhooks/endpoints",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "webhooks", "endpoints"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "endpoints"
+              ]
             }
           }
         },
@@ -381,8 +767,16 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{bearerToken}}", "type": "text" },
-              { "key": "Content-Type", "value": "application/json", "type": "text" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{bearerToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -390,8 +784,16 @@
             },
             "url": {
               "raw": "{{baseUrl}}/v1/webhooks/endpoints/{{endpointId}}/test",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "webhooks", "endpoints", "{{endpointId}}", "test"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "endpoints",
+                "{{endpointId}}",
+                "test"
+              ]
             }
           }
         },
@@ -400,15 +802,31 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{bearerToken}}", "type": "text" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{bearerToken}}",
+                "type": "text"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/webhooks/deliveries?page=1&per_page=20",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "webhooks", "deliveries"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "deliveries"
+              ],
               "query": [
-                { "key": "page", "value": "1" },
-                { "key": "per_page", "value": "20" }
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20"
+                }
               ]
             }
           }
@@ -418,12 +836,24 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{bearerToken}}", "type": "text" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{bearerToken}}",
+                "type": "text"
+              }
             ],
             "url": {
               "raw": "{{baseUrl}}/v1/webhooks/deliveries/{{deliveryId}}/replay",
-              "host": ["{{baseUrl}}"],
-              "path": ["v1", "webhooks", "deliveries", "{{deliveryId}}", "replay"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "deliveries",
+                "{{deliveryId}}",
+                "replay"
+              ]
             }
           }
         }
