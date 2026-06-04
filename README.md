@@ -8,7 +8,7 @@ This repo is intended to mirror the assets technical teams expect to find in pub
 - Postman collection
 - Postman environment
 - example webhook payloads
-- Hilt Pay API agent setup and owner approval examples
+- Hilt Pay API agent setup, owner approval, payment session, entitlement, and native subscription examples
 
 ## Canonical live surfaces
 
@@ -26,7 +26,7 @@ These GitHub files are public mirrors for trust and discoverability. The canonic
 - `postman/hilt-postman-environment.json`
 - `examples/webhooks/*.json`
 
-The Postman collection includes the agent-first setup loop: bootstrap a sandbox setup intent, submit a setup manifest with expected volume, receive a Hilt Pay API pricing recommendation, and route the owner through approval before live key issuance.
+The Postman collection includes the agent-first setup loop: bootstrap a sandbox setup intent, submit a setup manifest with expected volume, receive a Hilt Pay API pricing recommendation, and route the owner through approval before live key issuance. It also includes native subscription state and cancellation requests for recurring Solana USDC access products.
 
 ## What belongs here
 
@@ -37,6 +37,6 @@ Good examples:
 - versioned OpenAPI snapshots
 - Postman imports
 - example webhook payloads
-- example receiver scaffolds
+- example receiver implementations
 
 Keep the private product implementation in the main Hilt platform repository.

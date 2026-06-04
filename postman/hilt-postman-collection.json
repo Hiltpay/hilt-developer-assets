@@ -27,7 +27,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"product_type\": \"PAYMENT_LINK\",\n  \"title\": \"Discord membership\",\n  \"description\": \"Monthly paid access\",\n  \"amount_minor_units\": 29000000,\n  \"token_mint\": \"EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v\",\n  \"merchant_wallet\": \"{{merchantWallet}}\",\n  \"delivery_type\": \"DISCORD_INVITE\",\n  \"delivery_value\": \"https://discord.gg/example\",\n  \"membership_config\": {\n    \"enabled\": true,\n    \"platform\": \"DISCORD\",\n    \"identity_type\": \"DISCORD_USER_ID\",\n    \"renewal_mode\": \"MANUAL\",\n    \"billing_interval_days\": 30,\n    \"grace_period_days\": 3\n  }\n}"
+              "raw": "{\n  \"product_type\": \"PAYMENT_LINK\",\n  \"title\": \"30-day Discord access\",\n  \"description\": \"One-off access period\",\n  \"amount_minor_units\": 29000000,\n  \"token_mint\": \"EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v\",\n  \"merchant_wallet\": \"{{merchantWallet}}\",\n  \"delivery_type\": \"DISCORD_INVITE\",\n  \"delivery_value\": \"https://discord.gg/example\",\n  \"membership_config\": {\n    \"enabled\": true,\n    \"platform\": \"DISCORD\",\n    \"identity_type\": \"DISCORD_USER_ID\",\n    \"renewal_mode\": \"ONE_OFF\",\n    \"billing_interval_days\": 30,\n    \"grace_period_days\": 3\n  }\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/v1/products",
@@ -223,7 +223,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"setup_token\": \"{{setupToken}}\",\n  \"manifest\": {\n    \"app\": {\n      \"name\": \"Acme AI\",\n      \"external_app_id\": \"acme-ai\"\n    },\n    \"product\": {\n      \"external_product_id\": \"pro-api\",\n      \"title\": \"Pro API access\",\n      \"amount_minor_units\": 79000000,\n      \"default_rail\": \"solana_usdc\",\n      \"expected_monthly_payments\": 120,\n      \"expected_monthly_volume_usd\": 9480,\n      \"expected_monthly_webhook_events\": 500,\n      \"expected_monthly_entitlement_checks\": 12000\n    },\n    \"payment_protocol\": \"x402\",\n    \"settlement_rail\": \"solana_usdc\",\n    \"protected_resource\": {\n      \"url\": \"https://api.acme.test/ai/pro\",\n      \"method\": \"POST\",\n      \"customer_identity\": \"external_customer_id\"\n    },\n    \"webhook\": {\n      \"url\": \"https://api.acme.test/webhooks/hilt\",\n      \"subscribed_events\": [\n        \"access.entitlement.activated\",\n        \"payment.confirmed\"\n      ]\n    }\n  }\n}"
+                  "raw": "{\n  \"setup_token\": \"{{setupToken}}\",\n  \"manifest\": {\n    \"app\": {\n      \"name\": \"Acme AI\",\n      \"external_app_id\": \"acme-ai\"\n    },\n    \"product\": {\n      \"external_product_id\": \"pro-api\",\n      \"title\": \"Pro API access\",\n      \"amount_minor_units\": 79000000,\n      \"default_rail\": \"solana_usdc\",\n      \"expected_monthly_payments\": 120,\n      \"expected_monthly_volume_usd\": 9480,\n      \"expected_monthly_webhook_events\": 500,\n      \"expected_monthly_entitlement_checks\": 12000,\n      \"billing_model\": \"recurring\",\n      \"renewal_mode\": \"solana_native_subscription\",\n      \"billing_interval_days\": 30,\n      \"cancel_at_period_end\": true\n    },\n    \"payment_protocol\": \"x402\",\n    \"settlement_rail\": \"solana_usdc\",\n    \"protected_resource\": {\n      \"url\": \"https://api.acme.test/ai/pro\",\n      \"method\": \"POST\",\n      \"customer_identity\": \"external_customer_id\"\n    },\n    \"webhook\": {\n      \"url\": \"https://api.acme.test/webhooks/hilt\",\n      \"subscribed_events\": [\n        \"access.entitlement.activated\",\n        \"payment.confirmed\"\n      ]\n    }\n  }\n}"
                 },
                 "url": {
                   "raw": "{{baseUrl}}/v1/access/agent-bootstrap/{{setupIntentId}}/manifest",
@@ -478,6 +478,112 @@
               ]
             }
           }
+        },
+        {
+          "name": "Native subscriptions",
+          "description": "Read native Solana USDC subscription state and create period-aware cancellation flows for recurring Hilt Pay API products.",
+          "item": [
+            {
+              "name": "Read native subscription",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Hilt-Key",
+                    "value": "{{apiKey}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/access/native-subscriptions/{{nativeSubscriptionAuthorizationId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "access",
+                    "native-subscriptions",
+                    "{{nativeSubscriptionAuthorizationId}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create native subscription cancellation intent",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Hilt-Key",
+                    "value": "{{apiKey}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"buyer_requested\",\n  \"cancel_at_period_end\": true\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/access/native-subscriptions/{{nativeSubscriptionAuthorizationId}}/cancel-intent",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "access",
+                    "native-subscriptions",
+                    "{{nativeSubscriptionAuthorizationId}}",
+                    "cancel-intent"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Confirm native subscription cancellation",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Hilt-Key",
+                    "value": "{{apiKey}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "native-cancel-{{nativeSubscriptionAuthorizationId}}-001",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cancel_tx_signature\": \"SOLANA_CANCEL_TRANSACTION_SIGNATURE\",\n  \"reason\": \"buyer_requested\",\n  \"immediate_revoke\": false,\n  \"verify_onchain\": true\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/access/native-subscriptions/{{nativeSubscriptionAuthorizationId}}/cancel-confirm",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "access",
+                    "native-subscriptions",
+                    "{{nativeSubscriptionAuthorizationId}}",
+                    "cancel-confirm"
+                  ]
+                }
+              }
+            }
+          ]
         }
       ]
     },

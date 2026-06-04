@@ -109,6 +109,12 @@
       "value": "solana_usdc",
       "type": "text",
       "enabled": true
+    },
+    {
+      "key": "nativeSubscriptionAuthorizationId",
+      "value": "",
+      "type": "default",
+      "enabled": true
     }
   ],
   "_postman_variable_scope": "environment",
