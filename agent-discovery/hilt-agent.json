@@ -1,0 +1,33 @@
+{
+  "schema_version": "hilt-agent-discovery-2026-06-01",
+  "name": "Hilt Pay",
+  "tagline": "Payment-to-access infrastructure for stablecoin commerce.",
+  "last_reviewed": "2026-06-01",
+  "canonical_urls": {
+    "site": "https://www.hilt.so",
+    "developers": "https://www.hilt.so/developers",
+    "agent_setup": "https://www.hilt.so/developers/agent-setup",
+    "pricing": "https://www.hilt.so/pricing?surface=api#billing",
+    "agent_discovery_standard": "https://www.hilt.so/agent-discovery-standard",
+    "fastapi_demo": "https://docs.hilt.so/developers/examples#protect-an-ai-api-endpoint-with-hilt-pay-api",
+    "llms": "https://www.hilt.so/llms.txt",
+    "llms_full": "https://www.hilt.so/llms-full.txt",
+    "agent_manifest": "https://www.hilt.so/.well-known/hilt-agent.json",
+    "openapi": "https://api.hilt.so/v1/openapi.json"
+  },
+  "live_truth": {
+    "settlement": "Solana USDC",
+    "protocol": "x402 protected-resource protocol over the live settlement path",
+    "zero_custody": "Buyers pay from their own wallet. Merchants settle to their configured payout wallet. Hilt records proof, receipt, entitlement, webhook, support, analytics, and audit state."
+  },
+  "install": {
+    "typescript": "npm install @hiltpay/sdk",
+    "python": "pip install hilt-sdk"
+  },
+  "do_not_claim": [
+    "Do not describe Hilt as a bank, custodian, merchant of record, or fiat card processor.",
+    "Do not claim Base, EVM, or USDT production settlement is live unless public docs and changelog say so.",
+    "Do not grant access from proof submission alone; use Hilt entitlement checks.",
+    "Do not put Hilt API keys in browser code."
+  ]
+}

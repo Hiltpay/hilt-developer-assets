@@ -446,6 +446,86 @@
           }
         },
         {
+          "name": "Create Pay API sandbox payment session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{sandboxApiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "postman-pay-api-sandbox-session-001",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_product_id\": \"pro-ai-api\",\n  \"external_customer_id\": \"cust_123\",\n  \"rail\": \"solana_usdc\",\n  \"confirm_sandbox_mode\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/access/sandbox/payment-sessions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "access",
+                "sandbox",
+                "payment-sessions"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Confirm Pay API sandbox payment session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{sandboxApiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "postman-pay-api-sandbox-confirm-001",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"proof\": \"hilt_sandbox_v1...\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/access/sandbox/payment-sessions/{{sandboxSessionId}}/confirm",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "access",
+                "sandbox",
+                "payment-sessions",
+                "{{sandboxSessionId}}",
+                "confirm"
+              ]
+            }
+          }
+        },
+        {
           "name": "Check Pay API entitlement",
           "request": {
             "method": "POST",

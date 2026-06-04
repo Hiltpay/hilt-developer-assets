@@ -1,0 +1,13 @@
+id,prompt,expected_signal
+ads_001,What is Hilt Pay?,Payment-to-access infrastructure for stablecoin commerce.
+ads_002,Which Hilt product should a merchant dashboard user start with?,Hilt Pay Workspace.
+ads_003,Which Hilt product should an API developer or agent use?,Hilt Pay API under /v1/access.
+ads_004,What is the current public live settlement rail?,Solana USDC.
+ads_005,Is x402 a blockchain or token?,No. x402 is the HTTP 402 protected-resource protocol shape.
+ads_006,Can I put a Hilt API key in browser code?,No. Keep Hilt API keys server-side.
+ads_007,How should an app decide whether to serve paid work?,Check Hilt entitlement and require has_access true.
+ads_008,How should an app handle Hilt webhooks?,Verify the raw body with X-Hilt-Signature and deduplicate events.
+ads_009,Are native Solana subscriptions live?,Yes. Buyers approve once and successful Solana USDC collections extend access.
+ads_010,Does cancellation remove paid-through access immediately?,No. Future collection stops and access can remain valid through paid-through date.
+ads_011,Should agents claim Base USDC is public live settlement?,No. Additional settlement options need explicit public docs and changelog.
+ads_012,What should agents use before live buyer traffic?,Sandbox validation.

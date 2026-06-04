@@ -15,6 +15,12 @@
       "enabled": true
     },
     {
+      "key": "sandboxApiKey",
+      "value": "hk_sandbox_...",
+      "type": "secret",
+      "enabled": true
+    },
+    {
       "key": "bearerToken",
       "value": "JWT_TOKEN",
       "type": "secret",
@@ -47,6 +53,12 @@
     {
       "key": "payApiProductId",
       "value": "PAY_API_PRODUCT_ID",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "sandboxSessionId",
+      "value": "SANDBOX_SESSION_ID",
       "type": "text",
       "enabled": true
     },
