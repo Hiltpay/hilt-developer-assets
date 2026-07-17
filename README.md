@@ -10,6 +10,7 @@ This repo is intended to mirror the assets technical teams expect to find in pub
 - Agent Discovery Standard manifest and prompt suite
 - example webhook payloads
 - Hilt Pay API agent setup and owner approval examples
+- runnable Grok Build and Next.js protected-resource example
 
 ## Canonical live surfaces
 
@@ -21,6 +22,7 @@ These GitHub files are public mirrors for trust and discoverability. The canonic
 - Swagger UI: `https://api.hilt.so/v1/docs`
 - Redoc: `https://api.hilt.so/v1/redoc`
 - Docs: `https://docs.hilt.so/developers`
+- Grok Build guide: `https://docs.hilt.so/developers/grok-build`
 
 ## Repo layout
 
@@ -31,6 +33,7 @@ These GitHub files are public mirrors for trust and discoverability. The canonic
 - `postman/hilt-postman-collection.json`
 - `postman/hilt-postman-environment.json`
 - `examples/webhooks/*.json`
+- `examples/grok-build-nextjs`
 
 The Postman collection includes the agent-first setup loop: bootstrap a sandbox setup intent, submit a setup manifest with expected volume, receive a Hilt Pay API pricing recommendation, and route the owner through approval before live key issuance.
 
@@ -44,5 +47,6 @@ Good examples:
 - Postman imports
 - example webhook payloads
 - example webhook receivers
+- runnable Hilt Pay API examples with tests and agent instructions
 
 Keep the private product implementation in the main Hilt platform repository.

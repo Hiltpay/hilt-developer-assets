@@ -15,4 +15,12 @@ jobs:
         with:
           node-version: 20
       - run: node -e "const fs=require('node:fs'); const files=['openapi/hilt-openapi-v1.json','postman/hilt-postman-collection.json','postman/hilt-postman-environment.json','examples/webhooks/payment.confirmed.json','examples/webhooks/delivery.failed.json']; for (const file of files) { JSON.parse(fs.readFileSync(file,'utf8')); console.log('validated ' + file); }"
-      - run: node -e "const fs=require('node:fs'); const manifest=JSON.parse(fs.readFileSync('agent-discovery/hilt-agent.json','utf8')); if (manifest.schema_version !== 'hilt-agent-discovery-2026-06-01') throw new Error('bad manifest schema'); const rows=fs.readFileSync('agent-discovery/HILT_AGENT_DISCOVERY_PROMPT_SUITE_2026-06-01.csv','utf8').trim().split(/\r?\n/); if (rows.length < 10) throw new Error('prompt suite too small'); console.log('validated agent discovery assets');"
+      - run: node -e "const fs=require('node:fs'); const manifest=JSON.parse(fs.readFileSync('agent-discovery/hilt-agent.json','utf8')); if (manifest.schema_version !== 'hilt-agent-discovery-2026-07-17') throw new Error('bad manifest schema'); const rows=fs.readFileSync('agent-discovery/HILT_AGENT_DISCOVERY_PROMPT_SUITE_2026-06-01.csv','utf8').trim().split(/\r?\n/); if (rows.length < 14) throw new Error('prompt suite too small'); console.log('validated agent discovery assets');"
+      - run: npm ci
+        working-directory: examples/grok-build-nextjs
+      - run: npm test
+        working-directory: examples/grok-build-nextjs
+      - run: npm run typecheck
+        working-directory: examples/grok-build-nextjs
+      - run: npm run build
+        working-directory: examples/grok-build-nextjs

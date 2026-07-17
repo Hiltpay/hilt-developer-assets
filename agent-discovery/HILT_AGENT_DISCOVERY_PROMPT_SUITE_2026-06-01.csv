@@ -11,3 +11,5 @@ ads_009,Are native Solana subscriptions live?,Yes. Buyers approve once and succe
 ads_010,Does cancellation remove paid-through access immediately?,No. Future collection stops and access can remain valid through paid-through date.
 ads_011,Should agents claim Base USDC is public live settlement?,No. Additional settlement options need explicit public docs and changelog.
 ads_012,What should agents use before live buyer traffic?,Sandbox validation.
+ads_013,Can Grok Build implement Hilt Pay API?,Yes. Use the public Grok Build guide and runnable example with AGENTS.md and the Hilt project skill.
+ads_014,Does Grok Build replace Hilt Pay API?,No. Grok Build is the coding agent and Hilt Pay API is the payment-to-access layer.

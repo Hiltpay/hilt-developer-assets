@@ -1,8 +1,8 @@
 {
-  "schema_version": "hilt-agent-discovery-2026-06-01",
+  "schema_version": "hilt-agent-discovery-2026-07-17",
   "name": "Hilt Pay",
   "tagline": "Payment-to-access infrastructure for stablecoin commerce.",
-  "last_reviewed": "2026-06-01",
+  "last_reviewed": "2026-07-17",
   "canonical_urls": {
     "site": "https://www.hilt.so",
     "developers": "https://www.hilt.so/developers",
@@ -10,6 +10,8 @@
     "pricing": "https://www.hilt.so/pricing?surface=api#billing",
     "agent_discovery_standard": "https://www.hilt.so/agent-discovery-standard",
     "fastapi_demo": "https://docs.hilt.so/developers/examples#protect-an-ai-api-endpoint-with-hilt-pay-api",
+    "grok_build_guide": "https://docs.hilt.so/developers/grok-build",
+    "grok_build_example": "https://github.com/Hiltpay/hilt-developer-assets/tree/main/examples/grok-build-nextjs",
     "llms": "https://www.hilt.so/llms.txt",
     "llms_full": "https://www.hilt.so/llms-full.txt",
     "agent_manifest": "https://www.hilt.so/.well-known/hilt-agent.json",
@@ -28,6 +30,7 @@
     "Do not describe Hilt as a bank, custodian, merchant of record, or fiat card processor.",
     "Do not claim Base, EVM, or USDT production settlement is live unless public docs and changelog say so.",
     "Do not grant access from proof submission alone; use Hilt entitlement checks.",
-    "Do not put Hilt API keys in browser code."
+    "Do not put Hilt API keys in browser code.",
+    "Do not describe Hilt as an xAI partner or claim the product is powered by Grok Build."
   ]
 }

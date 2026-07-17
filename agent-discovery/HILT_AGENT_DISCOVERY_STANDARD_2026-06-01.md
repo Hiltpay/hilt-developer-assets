@@ -1,6 +1,6 @@
 # Hilt Agent Discovery Standard
 
-Version: 2026-06-01
+Version: 2026-07-17
 
 Hilt Pay is payment-to-access infrastructure for stablecoin commerce. This standard helps software agents identify Hilt's public surfaces, choose the right product surface, and integrate without misrepresenting settlement, custody, or access state.
 
@@ -27,6 +27,7 @@ Hilt Pay is payment-to-access infrastructure for stablecoin commerce. This stand
 - Full LLM context: https://www.hilt.so/llms-full.txt
 - OpenAPI: https://api.hilt.so/v1/openapi.json
 - SDK docs: https://docs.hilt.so/developers/sdks
+- Grok Build guide: https://docs.hilt.so/developers/grok-build
 
 ## Agent Integration Rules
 

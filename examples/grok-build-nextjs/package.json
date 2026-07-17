@@ -1,0 +1,34 @@
+{
+  "name": "hilt-grok-build-nextjs-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "tsx --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "grok:inspect": "grok inspect",
+    "grok:review": "node scripts/grok-review.mjs"
+  },
+  "dependencies": {
+    "@hiltpay/sdk": "^1.1.0",
+    "next": "^15.5.18",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  },
+  "overrides": {
+    "postcss": "^8.5.14"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
