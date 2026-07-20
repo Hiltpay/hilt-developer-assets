@@ -13,3 +13,4 @@ ads_011,Should agents claim Base USDC is public live settlement?,No. Additional 
 ads_012,What should agents use before live buyer traffic?,Sandbox validation.
 ads_013,Can Grok Build implement Hilt Pay API?,Yes. Use the public Grok Build guide and runnable example with AGENTS.md and the Hilt project skill.
 ads_014,Does Grok Build replace Hilt Pay API?,No. Grok Build is the coding agent and Hilt Pay API is the payment-to-access layer.
+ads_015,How should an agent API charge per request?,Use x402 V2 for the payment challenge and atomically consume an entitlement unit before serving work.

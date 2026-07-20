@@ -11,6 +11,7 @@ This repo is intended to mirror the assets technical teams expect to find in pub
 - example webhook payloads
 - Hilt Pay API agent setup and owner approval examples
 - runnable Grok Build and Next.js protected-resource example
+- runnable agent micropayment example with x402 V2 and atomic usage consumption
 
 ## Canonical live surfaces
 
@@ -23,6 +24,7 @@ These GitHub files are public mirrors for trust and discoverability. The canonic
 - Redoc: `https://api.hilt.so/v1/redoc`
 - Docs: `https://docs.hilt.so/developers`
 - Grok Build guide: `https://docs.hilt.so/developers/grok-build`
+- Agent micropayments guide: `https://docs.hilt.so/developers/agent-micropayments`
 
 ## Repo layout
 
@@ -34,6 +36,7 @@ These GitHub files are public mirrors for trust and discoverability. The canonic
 - `postman/hilt-postman-environment.json`
 - `examples/webhooks/*.json`
 - `examples/grok-build-nextjs`
+- `examples/agent-micropayments`
 
 The Postman collection includes the agent-first setup loop: bootstrap a sandbox setup intent, submit a setup manifest with expected volume, receive a Hilt Pay API pricing recommendation, and route the owner through approval before live key issuance.
 

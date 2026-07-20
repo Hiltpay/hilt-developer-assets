@@ -1,8 +1,8 @@
 {
-  "schema_version": "hilt-agent-discovery-2026-07-17",
+  "schema_version": "hilt-agent-discovery-2026-07-20",
   "name": "Hilt Pay",
   "tagline": "Payment-to-access infrastructure for stablecoin commerce.",
-  "last_reviewed": "2026-07-17",
+  "last_reviewed": "2026-07-20",
   "canonical_urls": {
     "site": "https://www.hilt.so",
     "developers": "https://www.hilt.so/developers",
@@ -12,6 +12,8 @@
     "fastapi_demo": "https://docs.hilt.so/developers/examples#protect-an-ai-api-endpoint-with-hilt-pay-api",
     "grok_build_guide": "https://docs.hilt.so/developers/grok-build",
     "grok_build_example": "https://github.com/Hiltpay/hilt-developer-assets/tree/main/examples/grok-build-nextjs",
+    "agent_micropayments_guide": "https://docs.hilt.so/developers/agent-micropayments",
+    "agent_micropayments_example": "https://github.com/Hiltpay/hilt-developer-assets/tree/main/examples/agent-micropayments",
     "llms": "https://www.hilt.so/llms.txt",
     "llms_full": "https://www.hilt.so/llms-full.txt",
     "agent_manifest": "https://www.hilt.so/.well-known/hilt-agent.json",

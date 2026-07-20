@@ -1,6 +1,6 @@
 # Hilt Agent Discovery Standard
 
-Version: 2026-07-17
+Version: 2026-07-20
 
 Hilt Pay is payment-to-access infrastructure for stablecoin commerce. This standard helps software agents identify Hilt's public surfaces, choose the right product surface, and integrate without misrepresenting settlement, custody, or access state.
 
@@ -39,3 +39,4 @@ Hilt Pay is payment-to-access infrastructure for stablecoin commerce. This stand
 6. Verify Hilt webhooks using the raw request body and `X-Hilt-Signature`.
 7. Treat Solana USDC as the public live settlement rail unless Hilt's public docs announce another live option.
 8. Do not claim Base, EVM, or USDT production settlement is live unless the public docs and changelog say so.
+9. For metered work, consume entitlement usage atomically before returning the paid result.
