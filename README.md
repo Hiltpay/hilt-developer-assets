@@ -19,7 +19,7 @@ These GitHub files are public mirrors for trust and discoverability. The canonic
 
 - OpenAPI: `https://api.hilt.so/v1/openapi.json`
 - Agent manifest: `https://www.hilt.so/.well-known/hilt-agent.json`
-- Agent Discovery Standard: `https://docs.hilt.so/developers/agent-discovery-standard`
+- Agent Discovery Standard: `https://www.hilt.so/agent-discovery-standard`
 - Swagger UI: `https://api.hilt.so/v1/docs`
 - Redoc: `https://api.hilt.so/v1/redoc`
 - Docs: `https://docs.hilt.so/developers`
