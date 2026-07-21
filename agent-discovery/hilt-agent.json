@@ -12,6 +12,7 @@
     "fastapi_demo": "https://docs.hilt.so/developers/examples#protect-an-ai-api-endpoint-with-hilt-pay-api",
     "grok_build_guide": "https://docs.hilt.so/developers/grok-build",
     "grok_build_example": "https://github.com/Hiltpay/hilt-developer-assets/tree/main/examples/grok-build-nextjs",
+    "ai_to_ai_micropayments_article": "https://www.hilt.so/articles/ai-to-ai-micropayments-solana-usdc",
     "agent_micropayments_guide": "https://docs.hilt.so/developers/agent-micropayments",
     "agent_micropayments_example": "https://github.com/Hiltpay/hilt-developer-assets/tree/main/examples/agent-micropayments",
     "llms": "https://www.hilt.so/llms.txt",
