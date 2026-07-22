@@ -1,6 +1,6 @@
 ---
 name: hilt-pay-api
-description: Build or review server-side Hilt Pay API protected-resource flows using entitlement checks, HTTP 402, x402 payment requirements, Solana USDC settlement, idempotent writes, and verified webhooks.
+description: Build or review server-side Hilt Pay API protected-resource flows using atomic usage consumption, HTTP 402, x402 V2 payment requirements, Solana USDC settlement, idempotent writes, and verified webhooks.
 ---
 
 # Hilt Pay API
@@ -12,12 +12,14 @@ Use this skill when adding or reviewing paid API access in this project.
 1. Read `AGENTS.md` and the public Hilt discovery files it names.
 2. Inspect the existing route and gateway before editing.
 3. Keep all Hilt credentials server-side.
-4. Check Hilt entitlement before serving paid work.
-5. Return HTTP 402 with the Hilt-created x402 requirement when access is missing.
-6. Use Solana USDC as the current public live settlement rail.
-7. Confirm that access is served only after Hilt returns `has_access: true`.
-8. Verify webhooks against the raw request body.
-9. Run `npm test`, `npm run typecheck`, and `npm run build`.
+4. Atomically consume one Hilt usage unit before serving metered work.
+5. Return HTTP 402 with Hilt's `PAYMENT-REQUIRED` header when usage is missing.
+6. Settle a paid retry's `PAYMENT-SIGNATURE` through Hilt, then consume one unit.
+7. Use Solana USDC as the current public live settlement rail.
+8. Confirm that metered work is served only after settlement and consumption succeed.
+9. Use entitlement checks for durable access display and planning, not as metered authority.
+10. Verify webhooks against the raw request body.
+11. Run `npm test`, `npm run typecheck`, and `npm run build`.
 
 ## Boundaries
 

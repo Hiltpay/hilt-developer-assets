@@ -12,6 +12,7 @@ This repo is intended to mirror the assets technical teams expect to find in pub
 - Hilt Pay API agent setup and owner approval examples
 - runnable Grok Build and Next.js protected-resource example
 - runnable agent micropayment example with x402 V2 and atomic usage consumption
+- runnable FastAPI metered-request example
 
 ## Canonical live surfaces
 
@@ -37,8 +38,9 @@ These GitHub files are public mirrors for trust and discoverability. The canonic
 - `examples/webhooks/*.json`
 - `examples/grok-build-nextjs`
 - `examples/agent-micropayments`
+- `examples/hilt-access-fastapi`
 
-The Postman collection includes the agent-first setup loop: bootstrap a sandbox setup intent, submit a setup manifest with expected volume, receive a Hilt Pay API pricing recommendation, and route the owner through approval before live key issuance.
+The Postman collection includes agent-first setup plus the x402 V2 payment-session, settlement, atomic-consumption, and durable-entitlement routes.
 
 ## What belongs here
 

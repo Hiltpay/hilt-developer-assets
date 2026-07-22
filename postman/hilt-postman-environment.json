@@ -57,6 +57,48 @@
       "enabled": true
     },
     {
+      "key": "payApiExternalProductId",
+      "value": "pro-ai-api",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "payApiExternalCustomerId",
+      "value": "cust_123",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "payApiRequestId",
+      "value": "req_001",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "payApiPaymentSessionId",
+      "value": "HILT_PAYMENT_SESSION_ID",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "payApiPaymentRequired",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "payApiPaymentSignature",
+      "value": "BASE64_X402_V2_PAYMENT_PAYLOAD",
+      "type": "secret",
+      "enabled": true
+    },
+    {
+      "key": "payApiPaymentResponse",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
       "key": "sandboxSessionId",
       "value": "SANDBOX_SESSION_ID",
       "type": "text",
@@ -130,6 +172,6 @@
     }
   ],
   "_postman_variable_scope": "environment",
-  "_postman_exported_at": "2026-05-05T22:30:00.000Z",
+  "_postman_exported_at": "2026-07-21T22:30:00.000Z",
   "_postman_exported_using": "Codex"
 }

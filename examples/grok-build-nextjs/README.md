@@ -2,15 +2,18 @@
 
 This is a runnable Next.js App Router example for adding paid API access with Hilt Pay API. It includes:
 
-- a protected API route that checks Hilt entitlement before serving content
-- an HTTP `402 Payment Required` response when access is missing
+- a protected API route that atomically consumes one Hilt usage unit before serving content
+- an HTTP `402 Payment Required` response with Hilt's `PAYMENT-REQUIRED` header when usage is missing
 - Hilt Pay API payment-session creation under `/v1/access`
+- x402 V2 `PAYMENT-SIGNATURE` settlement through Hilt
 - local and Hilt sandbox confirmation paths for development
 - signed Hilt webhook verification
 - `AGENTS.md` and a project skill that Grok Build discovers automatically
-- automated tests for the denied -> 402 -> confirmation -> entitlement -> access loop
+- automated tests for the consume -> 402 -> settle -> consume -> serve loop
 
 Current public live settlement is Solana USDC. x402 is the HTTP `402 Payment Required` protected-resource protocol shape, not a chain, token, wallet, or settlement rail.
+
+Requires Node.js 20.9 or newer.
 
 ## Run the local flow
 
@@ -49,7 +52,9 @@ HILT_PAY_API_PRODUCT=your-external-product-id
 HILT_WEBHOOK_SECRET=whsec_...
 ```
 
-The protected route serves its response only when `POST /v1/access/entitlements/check` returns `has_access: true`. The example does not sign or submit a buyer payment from the server.
+For metered requests, the protected route uses `POST /v1/access/entitlements/consume` as the runtime authority. On a paid retry, it sends the buyer's `PAYMENT-SIGNATURE` to `POST /v1/access/x402/settle`, atomically consumes one unit, and serves only after both calls succeed. The buyer signs from its own wallet; the server never holds a buyer key.
+
+Use `POST /v1/access/entitlements/check` for durable or time-based access display and planning. It is not the authority for a billable metered request.
 
 Before live buyer traffic, complete Hilt setup, owner approval, billing, payout wallet configuration, webhook setup, and sandbox validation.
 
@@ -65,7 +70,7 @@ grok
 Then ask:
 
 ```text
-Read AGENTS.md and invoke the hilt-pay-api skill. Verify this example, explain the denied -> 402 -> entitlement flow, and adapt it to my protected endpoint without moving Hilt keys into browser code.
+Read AGENTS.md and invoke the hilt-pay-api skill. Verify this example, explain the consume -> 402 -> settle -> consume -> serve flow, and adapt it to my metered endpoint without moving Hilt keys into browser code.
 ```
 
 For a headless review:
@@ -78,7 +83,7 @@ npm run grok:review
 
 | Route | Purpose |
 | --- | --- |
-| `POST /api/protected-report` | Checks entitlement, returns HTTP 402 when unpaid, and serves the protected report only when access is active. |
+| `POST /api/protected-report` | Settles an optional `PAYMENT-SIGNATURE`, atomically consumes one unit, returns HTTP 402 when unpaid, and serves only after successful consumption. |
 | `POST /api/demo/confirm` | Confirms only local or Hilt sandbox sessions. It is unavailable in live mode. |
 | `GET /api/status` | Returns safe mode, product, protocol, and settlement metadata. It never returns secrets. |
 | `POST /api/hilt/webhook` | Verifies `X-Hilt-Signature` against the raw request body before dispatching events. |

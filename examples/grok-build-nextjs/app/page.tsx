@@ -51,7 +51,11 @@ export default function Home() {
     try {
       const response = await fetch("/api/protected-report", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "X-Customer-Id": customerId },
+        headers: {
+          "Content-Type": "application/json",
+          "X-Customer-Id": customerId,
+          "X-Request-Id": attemptId,
+        },
         body: JSON.stringify({ attempt_id: attemptId, prompt }),
       });
       setResult({ status: response.status, body: (await response.json()) as Record<string, unknown> });
@@ -100,8 +104,8 @@ export default function Home() {
         <p className="eyebrow">Runnable developer example</p>
         <h1>Protect an API route with Hilt Pay API.</h1>
         <p>
-          Request the report below. The server checks entitlement, returns HTTP 402 when access is missing, and serves
-          the response only after access is active.
+          Request the report below. The server atomically consumes one usage unit, returns HTTP 402 when payment is
+          required, and serves the response only after settlement and consumption succeed.
         </p>
       </section>
 
@@ -154,7 +158,7 @@ export default function Home() {
             {result && <span className={accessGranted ? "state success" : "state payment"}>{accessGranted ? "Access granted" : "Payment required"}</span>}
           </div>
 
-          {!result && <p className="empty">The entitlement and payment-session response will appear here.</p>}
+          {!result && <p className="empty">The usage and payment-session response will appear here.</p>}
 
           {result && <pre>{JSON.stringify(result.body, null, 2)}</pre>}
 

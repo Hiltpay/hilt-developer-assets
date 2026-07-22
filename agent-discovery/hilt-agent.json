@@ -1,8 +1,8 @@
 {
-  "schema_version": "hilt-agent-discovery-2026-07-20",
+  "schema_version": "hilt-agent-discovery-2026-07-21",
   "name": "Hilt Pay",
   "tagline": "Payment-to-access infrastructure for stablecoin commerce.",
-  "last_reviewed": "2026-07-20",
+  "last_reviewed": "2026-07-21",
   "canonical_urls": {
     "site": "https://www.hilt.so",
     "developers": "https://www.hilt.so/developers",
@@ -22,7 +22,8 @@
   },
   "live_truth": {
     "settlement": "Solana USDC",
-    "protocol": "x402 protected-resource protocol over the live settlement path",
+    "protocol": "x402 V2 is the HTTP 402 protected-resource protocol shape",
+    "metered_runtime": "Consume one unit, return PAYMENT-REQUIRED when usage is missing, settle PAYMENT-SIGNATURE through Hilt, consume one unit, then serve.",
     "zero_custody": "Buyers pay from their own wallet. Merchants settle to their configured payout wallet. Hilt records proof, receipt, entitlement, webhook, support, analytics, and audit state."
   },
   "install": {
@@ -32,7 +33,7 @@
   "do_not_claim": [
     "Do not describe Hilt as a bank, custodian, merchant of record, or fiat card processor.",
     "Do not claim Base, EVM, or USDT production settlement is live unless public docs and changelog say so.",
-    "Do not grant access from proof submission alone; use Hilt entitlement checks.",
+    "Do not grant access from proof submission alone; use Hilt entitlement checks for durable access or atomic consumption for metered work.",
     "Do not put Hilt API keys in browser code.",
     "Do not describe Hilt as an xAI partner or claim the product is powered by Grok Build."
   ]

@@ -1,14 +1,17 @@
+import { PAYMENT_REQUIRED_HEADER, PAYMENT_RESPONSE_HEADER } from "@hiltpay/sdk/x402";
 import type { HiltAccessGateway } from "./hilt-access";
 
 export interface ProtectedFlowInput {
-  attemptId?: string;
   customerId?: string;
+  paymentSignature?: string;
   prompt?: string;
+  requestId?: string;
   resourceUrl: string;
 }
 
 export interface ProtectedFlowResponse {
   body: Record<string, unknown>;
+  headers?: Record<string, string>;
   status: number;
 }
 
@@ -24,18 +27,52 @@ export async function handleProtectedFlow(
     };
   }
 
-  const entitlement = await gateway.checkEntitlement(customerId);
-  if (entitlement.has_access) {
+  const requestId = input.requestId?.trim();
+  if (!requestId) {
+    return {
+      status: 400,
+      body: { error: "request_required", message: "Provide X-Request-Id for retry-safe usage consumption." },
+    };
+  }
+
+  const settlement = input.paymentSignature
+    ? await gateway.settlePayment(input.paymentSignature, requestId)
+    : null;
+  const consumption = await gateway.consumeEntitlement(customerId, requestId);
+
+  if (consumption.consumed) {
     return {
       status: 200,
+      headers: settlement?.paymentResponse
+        ? { [PAYMENT_RESPONSE_HEADER]: settlement.paymentResponse }
+        : undefined,
       body: {
         ok: true,
         access: "granted",
-        entitlement,
+        consumption,
         report: {
           title: "Protected Solana commerce report",
           requested_by: customerId,
+          request_id: requestId,
           summary: `Paid response for: ${input.prompt?.trim() || "latest payment-to-access signals"}`,
+        },
+      },
+    };
+  }
+
+  if (settlement) {
+    return {
+      status: 503,
+      headers: settlement.paymentResponse
+        ? { [PAYMENT_RESPONSE_HEADER]: settlement.paymentResponse, "Retry-After": "1" }
+        : { "Retry-After": "1" },
+      body: {
+        error: "usage_activation_pending",
+        message: "Payment settled, but usage could not yet be consumed. Retry this request with the same X-Request-Id.",
+        payment_session_id: settlement.paymentSessionId,
+        usage: {
+          consumed: false,
+          reason: consumption.reason,
         },
       },
     };
@@ -44,20 +81,24 @@ export async function handleProtectedFlow(
   const session = await gateway.createPaymentSession({
     externalCustomerId: customerId,
     resourceUrl: input.resourceUrl,
-    attemptId: input.attemptId,
+    requestId,
   });
 
   return {
     status: 402,
+    headers: {
+      "Cache-Control": "no-store",
+      [PAYMENT_REQUIRED_HEADER]: session.payment_required_header,
+    },
     body: {
       error: "payment_required",
       payment_protocol: "x402",
       settlement_rail: "solana_usdc",
       mode: gateway.config.mode,
-      entitlement: {
-        has_access: false,
-        status: entitlement.status,
-        reason: entitlement.reason,
+      usage: {
+        consumed: false,
+        reason: consumption.reason,
+        remaining: consumption.usage?.remaining || 0,
       },
       payment_session: {
         id: session.id,

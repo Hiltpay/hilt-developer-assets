@@ -1,8 +1,8 @@
 {
   "info": {
     "_postman_id": "67f42a19-4bd9-44c4-8a2a-7d55f23d21fb",
-    "name": "Hilt Merchant Contract",
-    "description": "Official Postman collection for Hilt Pay Workspace and Hilt Pay API: products, checkout, payments, memberships, receipts, support, webhooks, and agent-first Hilt Pay API setup.",
+    "name": "Hilt Pay Public API",
+    "description": "Official Postman collection for Hilt Pay Workspace and Hilt Pay API, including x402 V2 settlement, atomic metered usage, durable entitlements, native subscriptions, receipts, support, and webhooks.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -419,7 +419,7 @@
               },
               {
                 "key": "Idempotency-Key",
-                "value": "postman-pay-api-session-001",
+                "value": "payment-{{payApiRequestId}}",
                 "type": "text"
               },
               {
@@ -430,7 +430,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"external_product_id\": \"pro-ai-api\",\n  \"external_customer_id\": \"cust_123\",\n  \"email\": \"buyer@example.com\",\n  \"rail\": \"solana_usdc\"\n}"
+              "raw": "{\n  \"external_product_id\": \"{{payApiExternalProductId}}\",\n  \"external_customer_id\": \"{{payApiExternalCustomerId}}\",\n  \"rail\": \"solana_usdc\",\n  \"payment_protocol\": \"x402\",\n  \"settlement_rail\": \"solana_usdc\",\n  \"metadata\": {\n    \"resource\": \"https://api.example.com/research\",\n    \"description\": \"One metered request\",\n    \"mime_type\": \"application/json\"\n  }\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/v1/access/payment-sessions",
@@ -443,7 +443,23 @@
                 "payment-sessions"
               ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('payment session created', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));",
+                  "const body = pm.response.json();",
+                  "const session = body.payment_session || {};",
+                  "if (session.id) pm.environment.set('payApiPaymentSessionId', session.id);",
+                  "const required = (((session.payment_requirement || {}).headers || {})['PAYMENT-REQUIRED']);",
+                  "if (required) pm.environment.set('payApiPaymentRequired', required);"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Create Pay API sandbox payment session",
@@ -526,7 +542,117 @@
           }
         },
         {
-          "name": "Check Pay API entitlement",
+          "name": "Settle x402 V2 payment",
+          "description": "Run this after a buyer client signs the advertised Solana USDC terms and places the resulting x402 V2 payload in payApiPaymentSignature.",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "settle-{{payApiRequestId}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payment_session_id\": \"{{payApiPaymentSessionId}}\",\n  \"payment_signature\": \"{{payApiPaymentSignature}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/access/x402/settle",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "access",
+                "x402",
+                "settle"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('x402 V2 settlement succeeded', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.x402Version).to.eql(2);",
+                  "const paymentResponse = pm.response.headers.get('PAYMENT-RESPONSE') || ((body.headers || {})['PAYMENT-RESPONSE']);",
+                  "if (paymentResponse) pm.environment.set('payApiPaymentResponse', paymentResponse);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consume metered entitlement",
+          "description": "Atomic runtime authority for one billable request. Use one stable request id and idempotency key for each logical operation.",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "consume-{{payApiRequestId}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_product_id\": \"{{payApiExternalProductId}}\",\n  \"external_customer_id\": \"{{payApiExternalCustomerId}}\",\n  \"units\": 1,\n  \"metadata\": {\n    \"request_id\": \"{{payApiRequestId}}\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/access/entitlements/consume",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "access",
+                "entitlements",
+                "consume"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('one usage unit consumed', () => {",
+                  "  pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "  pm.expect(pm.response.json().consumed).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Check durable Pay API entitlement",
+          "description": "Use for durable or time-based access display and planning. Atomic consumption is the authority for metered requests.",
           "request": {
             "method": "POST",
             "header": [
@@ -543,7 +669,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"external_product_id\": \"pro-ai-api\",\n  \"rail\": \"solana_usdc\",\n  \"external_customer_id\": \"cust_123\"\n}"
+              "raw": "{\n  \"external_product_id\": \"{{payApiExternalProductId}}\",\n  \"rail\": \"solana_usdc\",\n  \"external_customer_id\": \"{{payApiExternalCustomerId}}\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/v1/access/entitlements/check",

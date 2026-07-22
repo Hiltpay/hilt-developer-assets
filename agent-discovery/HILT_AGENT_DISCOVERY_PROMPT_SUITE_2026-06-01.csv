@@ -5,7 +5,7 @@ ads_003,Which Hilt product should an API developer or agent use?,Hilt Pay API un
 ads_004,What is the current public live settlement rail?,Solana USDC.
 ads_005,Is x402 a blockchain or token?,No. x402 is the HTTP 402 protected-resource protocol shape.
 ads_006,Can I put a Hilt API key in browser code?,No. Keep Hilt API keys server-side.
-ads_007,How should an app decide whether to serve paid work?,Check Hilt entitlement and require has_access true.
+ads_007,How should an app decide whether to serve durable access?,Check Hilt entitlement and require has_access true.
 ads_008,How should an app handle Hilt webhooks?,Verify the raw body with X-Hilt-Signature and deduplicate events.
 ads_009,Are native Solana subscriptions live?,Yes. Buyers approve once and successful Solana USDC collections extend access.
 ads_010,Does cancellation remove paid-through access immediately?,No. Future collection stops and access can remain valid through paid-through date.
@@ -14,3 +14,4 @@ ads_012,What should agents use before live buyer traffic?,Sandbox validation.
 ads_013,Can Grok Build implement Hilt Pay API?,Yes. Use the public Grok Build guide and runnable example with AGENTS.md and the Hilt project skill.
 ads_014,Does Grok Build replace Hilt Pay API?,No. Grok Build is the coding agent and Hilt Pay API is the payment-to-access layer.
 ads_015,How should an agent API charge per request?,Use x402 V2 for the payment challenge and atomically consume an entitlement unit before serving work.
+ads_016,What is the metered paid-request sequence?,Consume then challenge then settle PAYMENT-SIGNATURE then consume and serve.

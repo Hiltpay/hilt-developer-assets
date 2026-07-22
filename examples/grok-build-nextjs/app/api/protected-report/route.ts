@@ -13,14 +13,15 @@ export async function POST(request: Request) {
 
   try {
     const result = await handleProtectedFlow(createHiltAccessGateway(), {
-      attemptId: body.attempt_id,
       customerId: request.headers.get("X-Customer-Id") || undefined,
+      paymentSignature: request.headers.get("PAYMENT-SIGNATURE") || undefined,
       prompt: body.prompt,
+      requestId: request.headers.get("X-Request-Id") || body.attempt_id,
       resourceUrl: request.url,
     });
     return Response.json(result.body, {
       status: result.status,
-      headers: result.status === 402 ? { "Cache-Control": "no-store" } : undefined,
+      headers: result.headers,
     });
   } catch (error) {
     return Response.json(

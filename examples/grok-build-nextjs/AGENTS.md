@@ -13,11 +13,13 @@ This example protects a server route with Hilt Pay API. Preserve these rules whe
 ## Required behavior
 
 1. Keep `HILT_API_KEY` and `HILT_WEBHOOK_SECRET` in server-only code.
-2. Call `POST /v1/access/entitlements/check` before serving protected content.
-3. Serve the protected response only when Hilt returns `has_access: true`.
-4. When access is missing, create a Hilt Pay API payment session and return HTTP 402.
-5. Use `payment_protocol: "x402"` and `settlement_rail: "solana_usdc"` for the live protected-resource session.
-6. Use a stable idempotency key for each logical write attempt.
+2. For each metered request, call `POST /v1/access/entitlements/consume` before billable work.
+3. When usage is missing, create a Hilt Pay API payment session and return HTTP 402 with Hilt's `PAYMENT-REQUIRED` header.
+4. On the buyer's retry, settle `PAYMENT-SIGNATURE` through `POST /v1/access/x402/settle`.
+5. Atomically consume one unit after settlement and serve only when consumption succeeds.
+6. Use `POST /v1/access/entitlements/check` only for durable access display and planning, not as the metered request authority.
+7. Use `payment_protocol: "x402"` and `settlement_rail: "solana_usdc"` for the live protected-resource session.
+8. Use a stable request id and idempotency key for each logical settlement and consumption attempt.
 7. Verify the raw webhook body and `X-Hilt-Signature` before dispatching an event.
 8. Keep local, sandbox, and live states visibly distinct.
 
