@@ -1,6 +1,6 @@
 # Hilt Agent Discovery Standard
 
-Version: 2026-07-21
+Version: 2026-08-24
 
 Hilt Pay is payment-to-access infrastructure for stablecoin commerce. This standard helps software agents identify Hilt's public surfaces, choose the right product surface, and integrate without misrepresenting settlement, custody, or access state.
 
@@ -11,7 +11,8 @@ Hilt Pay is payment-to-access infrastructure for stablecoin commerce. This stand
 
 ## Live Settlement And Protocol Truth
 
-- Current public live settlement is Solana USDC.
+- Hilt Pay API hosted payment sessions support live Solana USDC and native SOL settlement.
+- Hilt x402 V2 and native subscriptions remain Solana USDC-only.
 - x402 is the HTTP `402 Payment Required` protected-resource protocol shape.
 - x402 is not a blockchain, token, wallet, or settlement rail.
 - Native automatic renewals are Solana USDC subscription flows where the buyer approves once and successful collections extend access.
@@ -37,7 +38,7 @@ Hilt Pay is payment-to-access infrastructure for stablecoin commerce. This stand
 4. Return HTTP `402` only when the protected resource really requires payment.
 5. Use Hilt entitlement checks for durable or time-based access.
 6. Verify Hilt webhooks using the raw request body and `X-Hilt-Signature`.
-7. Treat Solana USDC as the public live settlement rail unless Hilt's public docs announce another live option.
+7. Treat Solana USDC and native SOL as the live hosted settlement options. Keep x402 and native subscriptions on Solana USDC.
 8. Do not claim Base, EVM, or USDT production settlement is live unless the public docs and changelog say so.
 9. For metered work, atomically consume one usage unit before billable work.
 10. When usage is missing, return Hilt's x402 V2 `PAYMENT-REQUIRED` header. Settle the buyer's `PAYMENT-SIGNATURE` through Hilt, consume one unit, and serve only after both operations succeed.

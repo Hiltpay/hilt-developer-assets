@@ -408,7 +408,45 @@
           }
         },
         {
-          "name": "Create Pay API payment session",
+          "name": "Create native SOL Pay API product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "postman-pay-api-sol-product-001",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"access_app_id\": \"{{payApiAppId}}\",\n  \"external_product_id\": \"native-sol-api-access\",\n  \"title\": \"Native SOL API access\",\n  \"amount_minor_units\": 50000000,\n  \"merchant_wallet\": \"{{merchantWallet}}\",\n  \"entitlement_duration_days\": 30,\n  \"billing_model\": \"one_off\",\n  \"default_rail\": \"solana_sol\",\n  \"allowed_rails\": [\"solana_sol\"],\n  \"status\": \"active\",\n  \"live_mode_confirmed\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/access/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "access",
+                "products"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create x402 USDC Pay API payment session",
           "request": {
             "method": "POST",
             "header": [
@@ -456,6 +494,59 @@
                   "if (session.id) pm.environment.set('payApiPaymentSessionId', session.id);",
                   "const required = (((session.payment_requirement || {}).headers || {})['PAYMENT-REQUIRED']);",
                   "if (required) pm.environment.set('payApiPaymentRequired', required);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create native SOL hosted payment session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Hilt-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "native-sol-payment-{{payApiRequestId}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_product_id\": \"native-sol-api-access\",\n  \"external_customer_id\": \"{{payApiExternalCustomerId}}\",\n  \"rail\": \"solana_sol\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/access/payment-sessions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "access",
+                "payment-sessions"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('native SOL hosted session created', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));",
+                  "const body = pm.response.json();",
+                  "const session = body.payment_session || {};",
+                  "pm.expect(session.rail).to.eql('solana_sol');",
+                  "pm.expect(session.checkout_url).to.be.a('string').and.not.empty;"
                 ]
               }
             }

@@ -44,7 +44,7 @@ The Postman collection includes agent-first setup plus the x402 V2 payment-sessi
 
 ## What belongs here
 
-Use this repo for public developer assets that should be easy to inspect and download without exposing the private SaaS codebase.
+Use this repo for public developer assets that should be easy to inspect and download without requiring access to the platform source code.
 
 Good examples:
 
@@ -54,4 +54,4 @@ Good examples:
 - example webhook receivers
 - runnable Hilt Pay API examples with tests and agent instructions
 
-Keep the private product implementation in the main Hilt platform repository.
+Product implementation source remains separate from these public integration assets.

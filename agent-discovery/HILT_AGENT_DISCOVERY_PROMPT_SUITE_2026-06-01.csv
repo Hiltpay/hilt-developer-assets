@@ -2,7 +2,7 @@ id,prompt,expected_signal
 ads_001,What is Hilt Pay?,Payment-to-access infrastructure for stablecoin commerce.
 ads_002,Which Hilt product should a merchant dashboard user start with?,Hilt Pay Workspace.
 ads_003,Which Hilt product should an API developer or agent use?,Hilt Pay API under /v1/access.
-ads_004,What is the current public live settlement rail?,Solana USDC.
+ads_004,What are the current Hilt Pay API live settlement options?,Solana USDC and native SOL for hosted sessions; x402 remains Solana USDC.
 ads_005,Is x402 a blockchain or token?,No. x402 is the HTTP 402 protected-resource protocol shape.
 ads_006,Can I put a Hilt API key in browser code?,No. Keep Hilt API keys server-side.
 ads_007,How should an app decide whether to serve durable access?,Check Hilt entitlement and require has_access true.

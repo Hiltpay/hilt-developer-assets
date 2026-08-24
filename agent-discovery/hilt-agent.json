@@ -1,13 +1,13 @@
 {
-  "schema_version": "hilt-agent-discovery-2026-07-21",
+  "schema_version": "hilt-agent-discovery-2026-08-24",
   "name": "Hilt Pay",
   "tagline": "Payment-to-access infrastructure for stablecoin commerce.",
-  "last_reviewed": "2026-07-21",
+  "last_reviewed": "2026-08-24",
   "canonical_urls": {
     "site": "https://www.hilt.so",
     "developers": "https://www.hilt.so/developers",
     "agent_setup": "https://www.hilt.so/developers/agent-setup",
-    "pricing": "https://www.hilt.so/pricing?surface=api#billing",
+    "pricing": "https://www.hilt.so/developers/pricing",
     "agent_discovery_standard": "https://www.hilt.so/agent-discovery-standard",
     "fastapi_demo": "https://docs.hilt.so/developers/examples#protect-an-ai-api-endpoint-with-hilt-pay-api",
     "grok_build_guide": "https://docs.hilt.so/developers/grok-build",
@@ -21,8 +21,12 @@
     "openapi": "https://api.hilt.so/v1/openapi.json"
   },
   "live_truth": {
-    "settlement": "Solana USDC",
-    "protocol": "x402 V2 is the HTTP 402 protected-resource protocol shape",
+    "hosted_settlement": "Solana USDC and native SOL through separate Hilt Pay API products",
+    "x402_settlement": "Hilt x402 V2 settles in Solana USDC",
+    "subscriptions": "Native Solana subscriptions settle in Solana USDC",
+    "pricing": "$0/month plus 1% on each successful Solana USDC or native SOL settlement",
+    "protocol": "x402 V2 is the HTTP 402 protected-resource protocol shape, not a settlement rail",
+    "hosted_checkout_handoff": "The signed, expiring checkout URL is bound to the exact API payment session and pending entitlement and reuses that session.",
     "metered_runtime": "Consume one unit, return PAYMENT-REQUIRED when usage is missing, settle PAYMENT-SIGNATURE through Hilt, consume one unit, then serve.",
     "zero_custody": "Buyers pay from their own wallet. Merchants settle to their configured payout wallet. Hilt records proof, receipt, entitlement, webhook, support, analytics, and audit state."
   },
@@ -33,6 +37,7 @@
   "do_not_claim": [
     "Do not describe Hilt as a bank, custodian, merchant of record, or fiat card processor.",
     "Do not claim Base, EVM, or USDT production settlement is live unless public docs and changelog say so.",
+    "Do not claim native SOL is available through Hilt x402 V2 or native subscriptions.",
     "Do not grant access from proof submission alone; use Hilt entitlement checks for durable access or atomic consumption for metered work.",
     "Do not put Hilt API keys in browser code.",
     "Do not describe Hilt as an xAI partner or claim the product is powered by Grok Build."
