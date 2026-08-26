@@ -27,7 +27,9 @@ npm ci
 npm run typecheck
 ```
 
-Copy `src/protected-resource.ts` into a server route or worker and call `protectAgentRequest(request)`. Keep `HILT_API_KEY` server-side. Use `src/buyer.ts` in the wallet-owning client or agent runtime and pass its RPC URL and transaction signer.
+Use `protectEndpoint` from `@hiltpay/sdk` in a Fetch-compatible server route or worker. The example route is intentionally small: configure the Hilt client, name the Hilt Pay API product, and put billable work inside `handler`. Keep `HILT_API_KEY` server-side. Use `src/buyer.ts` in the wallet-owning client or agent runtime and pass its RPC URL and transaction signer.
+
+The caller sends a stable customer ID through `X-Hilt-Customer-Id`, `X-Customer-Id`, or `X-Agent-Id`, plus a stable request ID through `Idempotency-Key`, `X-Request-Id`, or `X-Hilt-Request-Id`. Reuse both values when retrying the same paid operation.
 
 Create the Hilt Pay API product with:
 
